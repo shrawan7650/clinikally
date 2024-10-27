@@ -1,14 +1,12 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, StatusBar, StyleSheet, ScrollView } from "react-native";
 import ProductList from "../components/ProductList";
 import products from "../data/products";
 import { StockData } from "../data/stock";
-import { StyleSheet } from "react-native";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Feather from "@expo/vector-icons/Feather";
-import { StatusBar } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,7 +20,7 @@ const AppStatusBar = () => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  // Get The Stock Information for each product
+  const [scrollEnabled, setEnabled] = React.useState(true);
   const combinedProducts = products.map((product) => {
     const stockInfo = StockData.find(
       (stock) => stock["Product ID"] === product["Product ID"]
@@ -36,56 +34,35 @@ const HomeScreen = ({ navigation }) => {
     };
   });
 
-  // Handle Product Selection
   const handleSelectProduct = (product) => {
     navigation.navigate("ProductScreen", { product });
   };
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} scrollEnabled={scrollEnabled}>
       <AppStatusBar />
-
-      {/* Header Start */}
+      
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <SimpleLineIcons
-            name="menu"
-            size={24}
-            color="black"
-            style={styles.iconSpacing}
-          />
-          <Ionicons
-            name="search"
-            size={24}
-            color="black"
-            style={styles.iconSpacing}
-          />
+          <SimpleLineIcons name="menu" size={24} color="black" style={styles.iconSpacing} />
+          <Ionicons name="search" size={24} color="black" style={styles.iconSpacing} />
         </View>
         <Text style={styles.headerTitle}>Clinikally</Text>
         <View style={styles.headerRight}>
-          <FontAwesome6
-            name="user"
-            size={24}
-            color="black"
-            style={styles.iconSpacing}
-          />
-          <Feather
-            name="shopping-bag"
-            size={24}
-            color="black"
-            style={styles.iconSpacing}
-          />
+          <FontAwesome6 name="user" size={24} color="black" style={styles.iconSpacing} />
+          <Feather name="shopping-bag" size={24} color="black" style={styles.iconSpacing} />
         </View>
       </View>
-      {/* Header End */}
 
       {/* Product List */}
-      <ProductList
+     <ScrollView>
+     <ProductList
         products={combinedProducts}
-        style={styles.productList}
         onSelectProduct={handleSelectProduct}
       />
-    </View>
+     </ScrollView>
+    </ScrollView>
   );
 };
 
@@ -95,6 +72,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    flexGrow: 1,  // Ensures scrollability for web
+    minHeight: height,  // Forces content to match screen height
+  },
+  contentContainer: {
+    paddingBottom: height * 0.02, // Adjust padding for end of scroll
   },
   header: {
     flexDirection: "row",
