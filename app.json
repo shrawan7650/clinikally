@@ -12,16 +12,23 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shrawan7650.DeliveryAppChainkinsDemo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shrawan7650.DeliveryAppChainkinsDemo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8c41f8fd-2189-4203-a0c3-77db954df05d"
+      }
     }
   }
 }

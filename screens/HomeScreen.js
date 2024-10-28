@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, StatusBar, ScrollView } from "react-native";
 import ProductList from "../components/ProductList";
 import products from "../data/products";
 import { StockData } from "../data/stock";
@@ -8,11 +8,9 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Feather from "@expo/vector-icons/Feather";
-import { StatusBar } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
-// Custom StatusBar Component
 const AppStatusBar = () => (
   <StatusBar
     barStyle="dark-content"
@@ -22,12 +20,10 @@ const AppStatusBar = () => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  // Get The Stock Information for each product
   const combinedProducts = products.map((product) => {
     const stockInfo = StockData.find(
       (stock) => stock["Product ID"] === product["Product ID"]
     );
-
     return {
       id: product["Product ID"],
       name: product["Product Name"],
@@ -36,16 +32,15 @@ const HomeScreen = ({ navigation }) => {
     };
   });
 
-  // Handle Product Selection
   const handleSelectProduct = (product) => {
     navigation.navigate("ProductScreen", { product });
   };
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View style={styles.container}>
       <AppStatusBar />
 
-      {/* Header Start */}
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <SimpleLineIcons
@@ -77,32 +72,30 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
       </View>
-      {/* Header End */}
 
       {/* Product List */}
-      <ProductList
-        products={combinedProducts}
-        style={styles.productList}
-        onSelectProduct={handleSelectProduct}
-      />
+      {/* <ScrollView> */}
+        <ProductList
+          products={combinedProducts}
+          onSelectProduct={handleSelectProduct}
+        />
+      {/* </ScrollView> */}
     </View>
   );
 };
 
-export default HomeScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: height * 0.017,
+    paddingVertical: height * 0.02,
     paddingHorizontal: width * 0.03,
-    marginTop: height * 0.027,
+    marginTop: height * 0.037,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
@@ -124,3 +117,5 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.03,
   },
 });
+
+export default HomeScreen;
